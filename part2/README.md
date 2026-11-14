@@ -26,4 +26,14 @@ Submit `t5_ft_experiment_test.sql` and `t5_ft_experiment_test.pkl`. For extra cr
 
 ## Extra credit: T5-small from scratch
 
-`train_t5_scratch_compact.py` trains the T5-small architecture from random initialization with a WordLevel tokenizer learned only from `train.nl` and `train.sql`. The selected checkpoint uses direct greedy generation (`--num_beams 1`). Development scores are SQL EM 22.532, Record EM 58.369, and Record F1 62.056. The outputs are generated only by this scratch model; no pretrained weights, retrieval, ensemble, or query replacement is used.
+The final run uses `train_t5_native_scratch.py`: randomly initialized T5-small,
+the native T5 tokenizer, and reversible encoding of the less-than SQL operator.
+Train with `python train_t5_native_scratch.py`; use `--inference-only` to generate
+from the saved best checkpoint. See `README_NATIVE_SCRATCH.md` for the complete
+configuration and acknowledgment of the classmate-shared reference design.
+
+The selected checkpoint is epoch 80 of 100, selected by Dev Record F1 evaluated
+every five epochs. Dev Query EM is 54.936%, Record EM 66.953%, and Record F1
+69.350%. It uses four-beam generation from one independently trained checkpoint.
+The older WordLevel scripts remain as historical experiments and do not generate
+the final submitted EC predictions.
