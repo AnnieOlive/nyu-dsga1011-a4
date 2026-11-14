@@ -26,6 +26,33 @@ Submit `t5_ft_experiment_test.sql` and `t5_ft_experiment_test.pkl`. For extra cr
 
 ## Extra credit: T5-small from scratch
 
+## Final main-model inference
+
+Run from `part2`, with the assignment data and the final Drive checkpoint at
+`checkpoints/ft_experiments/experiment/best_model.pt`:
+
+```bash
+python train_t5.py --finetune --eval_only --experiment_name experiment --num_beams 10 --num_return_sequences 10 --execution_guided --max_new_tokens 512 --output_prefix t5_ft_experiment
+```
+
+This selects the first beam candidate that executes within the helper's
+screening budget, or the top beam if all candidates fail. Failed final
+executions retain empty records and error messages. Seed is 42. This is the
+repository inference entry point; bit-for-bit equivalence with the historical
+Colab run has not been tested. The initial training and subsequent continuation
+stages are not fully captured in a preserved run configuration, so default
+training arguments must not be presented as an exact training reproduction.
+
+## Final extra-credit inference
+
+```bash
+python train_t5_native_scratch.py --inference-only --experiment native_lt_v1
+```
+
+Place the Drive EC `best/` and `tokenizer/` beneath
+`checkpoints/scr_experiments/native_lt_v1/`. The output names match the EC
+submission filenames. To train independently, omit `--inference-only`.
+
 The final run uses `train_t5_native_scratch.py`: randomly initialized T5-small,
 the native T5 tokenizer, and reversible encoding of the less-than SQL operator.
 Train with `python train_t5_native_scratch.py`; use `--inference-only` to generate
